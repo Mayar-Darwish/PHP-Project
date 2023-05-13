@@ -8,28 +8,31 @@ ini_set('display_st((artup_errors', 1);
 error_reporting(E_ALL);
 $date1 = $_POST["startDate"];
 $date2 = $_POST["endDate"];
+session_start();
 
-
+if($_SESSION['login']){
+    $userId= $_SESSION['id'];
+}
 try{
     $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
     $db_Connected = $db->connect();
     if((isset($date1) and empty($date1) )and( isset($date2) and empty($date2))){
-        $query = "SELECT * FROM `order`";
+        $query = "SELECT * FROM `order`  WHERE `order`.user_id = $userId";
         $stmt = $db_Connected->prepare($query);
     }
     elseif(isset($date2) and empty($date2)) {
 
-        $query = "SELECT * FROM `order` WHERE date >=  :date1";
+        $query = "SELECT * FROM `order` WHERE date >=  :date1 AND `order`.user_id = $userId";
          $stmt = $db_Connected->prepare($query);
          $stmt->bindParam(':date1', $date1);
     }
     elseif(isset($date1) and empty($date1)){
-        $query = "SELECT * FROM `order` WHERE date <=  :date2";
+        $query = "SELECT * FROM `order` WHERE date <=  :date2 AND `order`.user_id = $userId";
         $stmt = $db_Connected->prepare($query);
          $stmt->bindParam(':date2', $date2);
     }
     else{
-    $query = "SELECT * FROM `order` WHERE date BETWEEN :date1 AND :date2 ";
+    $query = "SELECT * FROM `order` WHERE date BETWEEN :date1 AND :date2 AND `order`.user_id = $userId ";
     $stmt = $db_Connected->prepare($query);
     $stmt->bindParam(':date1', $date1);
     $stmt->bindParam(':date2', $date2);

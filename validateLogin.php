@@ -42,7 +42,9 @@ try {
                 if($loggedIn){
                     session_start();
                     $_SESSION['user'] = $user['name'];
+                    $_SESSION['id'] = $user['id'];
                     $_SESSION['login'] = true;
+                
                 }
                 header("Location:userTest.php");
             } else {

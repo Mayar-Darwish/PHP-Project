@@ -11,10 +11,18 @@ ini_set('display_st((artup_errors', 1);
 error_reporting(E_ALL);
 
 
+session_start();
+
+if($_SESSION['login']){
+  $userId= $_SESSION['id'];
+  $userName = $_SESSION['user'];
+    #echo $userId;
+  }
+
 try{
 $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
 $db_Connected = $db->connect();
-$query = "SELECT * FROM `order`";
+$query = "SELECT * FROM `order` WHERE `order`.user_id = $userId";
 $stmt = $db_Connected->prepare($query);
 $res = $stmt->execute();
 
@@ -34,8 +42,6 @@ if (isset($_GET["emailerror"])) {
 if (isset($_GET["email"])) {
     $old_email = $_GET["email"];
 }
-
-
 
 if(isset($_GET["orders"])){
     $orders = json_decode($_GET["orders"], true);
@@ -95,7 +101,7 @@ if(isset($_GET["ProductDetailes"])){
                     <a href="#" class="nav-item nav-link">Orders</a>
                 </div>
                 <div class="navbar-nav ml-auto p-4">
-                    <a href="#" class=" mb-5 nav-item nav-link active">User</a>
+                    <a href="#" class=" mb-5 nav-item nav-link active"><?php echo "{$userName}"?></a>
                 </div>
             </div>
         </nav>
