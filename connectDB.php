@@ -35,17 +35,107 @@ class Database
             echo $e->getMessage();
         }
     }
-    
-    function  getAllCateogries($db){
+    ###
+
+    function select($tableName)
+    {
+        $db = $this->connect();
+        $query = "select * from {$tableName}";
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        $data = $stat->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    function selectItems($tableName)
+    {
+        $db = $this->connect();
+        $query = "select `image` , `Name` , `room_id` , `ext` from {$tableName}";
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        $data = $stat->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    function selecrByID($tableName, $userId)
+    {
+        $db = $this->connect();
+        $query = "select * from {$tableName} where `id` = $userId";
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        $data = $stat->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
+
+    function getRoom($room_id)  #get rooms
+    {
+        $db = $this->connect();
+        $query = "select `roomName` 
+                   from `user` join `room`
+                   where room.id = {$room_id};";
+        //    var_dump($query);
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        $data = $stat->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+
+    function update($table, $name, $email, $pass, $ext, $id)
+    {
+        $db = $this->connect();
+        $query = "update {$table} set name='{$name}',email=' {$email}',password='{$pass}',ext={$ext} where id= {$id}";
+        var_dump($query);
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        var_dump($res);
+        $data = $stat->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    function updateRoom($roomName, $id)
+    {
+        $db = $this->connect();
+        $getroom = "select `room_id` from user where `id`= $id";
+        $stat1 = $db->prepare($getroom);
+        $res1 = $stat1->execute();
+        $RoomId = $stat1->fetch(PDO::FETCH_ASSOC);
+
+        $query = "update `room` r inner join `user` u on r.`id`={$RoomId['room_id']} set r.`roomName`='{$roomName}' where u.id= {$id}";
+        var_dump($query);
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        $data = $stat->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+    function delete($tableName, $id)
+    {
+        $db = $this->connect();
+        $query = "delete from {$tableName} where id={$id}";
+
+        $stat = $db->prepare($query);
+        $res = $stat->execute();
+        $data = $stat->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    }
+
+###
+
+    function  getAllCateogries($db)
+    {
         $select_query = "select * from `cafteriPHPproject`.`cateogry`";
         $select_stmt = $db->prepare($select_query);
         $select_stmt->execute();
         $data = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
         return $data;
-
     }
 
-    function add_Product($db,$newProduct){
+    function add_Product($db, $newProduct)
+    {
         try {
 
             $insert_query = "insert into `cafteriPHPproject`.`product` (name,price,image, cateogry_id) values (:name, :price, :image, :cateogry_id);";
@@ -64,18 +154,15 @@ class Database
             }
             $DBResponse_Str = json_encode($DBResponse);
             header("Location:add_Product_form.php?response={$DBResponse_Str}");
-
-
-        }catch (Exception $e) {
+        } catch (Exception $e) {
             echo $e->getMessage();
         }
-
-
     }
 
-    function add_Cateogry($db, $newCateogry){
+    function add_Cateogry($db, $newCateogry)
+    {
         try {
-                       
+
             $insert_query = "insert into `cafteriPHPproject`.`cateogry` (name) values (:name);";
             $insert_statm = $db->prepare($insert_query);
             $insert_statm->bindParam(":name", $newCateogry['name'], PDO::PARAM_STR);
@@ -87,34 +174,28 @@ class Database
             }
             $DBResponse_Str = json_encode($DBResponse);
             header("Location:add_Cateogry_form.php?response={$DBResponse_Str}");
-
-
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-
     }
-    function select_available_Products($db){
+    function select_available_Products($db)
+    {
         $select_query = "select * from `cafteriPHPproject`.`product` where `product_status`='Available'; ";
         $select_stmt = $db->prepare($select_query);
         $select_stmt->execute();
         $products = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
         return $products;
-
-
     }
 
-    function select_product_ByID($db,$id){
+    function select_product_ByID($db, $id)
+    {
         $select_query = "select * from `cafteriPHPproject`.`product` where `product_status`='Available' and `id`=:id ; ";
-        
+
         $select_stmt = $db->prepare($select_query);
         $select_stmt->bindParam(":id", $id);
         $select_stmt->execute();
         $product = $select_stmt->fetch(PDO::FETCH_ASSOC);
         return $product;
-
-
-
     }
 
     function select_rooms($db)
@@ -126,21 +207,19 @@ class Database
         $rooms = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
         var_dump($rooms);
         return $rooms;
-
-
-
     }
-    function add_order($db,$order){
+    function add_order($db, $order)
+    {
         var_dump($order);
-      
+
         try {
             # insert in order table 
             $user_id = 1;
-           
+
             $insert_query = "insert into `cafteriPHPproject`.`order` (notes,totalPrice,user_id,room_id) values(:notes,:totalPrice,:user_id,:room_id);";
             $insert_statm = $db->prepare($insert_query);
             $insert_statm->bindParam(":notes", $order['note'], PDO::PARAM_STR);
-            $insert_statm->bindParam(":user_id",$user_id, PDO::PARAM_INT);
+            $insert_statm->bindParam(":user_id", $user_id, PDO::PARAM_INT);
             $insert_statm->bindParam(":totalPrice", $order["OrdertotalPrice"], PDO::PARAM_INT);
             $insert_statm->bindParam(":room_id", $order['room'], PDO::PARAM_INT);
             $response = $insert_statm->execute();
@@ -150,7 +229,7 @@ class Database
             $orderID = $db->lastInsertId();
 
             foreach ($order['products'] as $row) {
-               var_dump($row);
+                var_dump($row);
                 $insert_query = "insert into `cafteriPHPproject`.`order-product` (amount,product_id,order_id,totalProductPrice) values(:amount,:product_id,:order_id,:totalProductPrice);";
                 $insert_statm = $db->prepare($insert_query);
                 $insert_statm->bindParam(":amount", $row['quantity'], PDO::PARAM_INT);
@@ -160,32 +239,29 @@ class Database
                 $response = $insert_statm->execute();
                 var_dump($response);
             }
-        
-
-             
-            
-             echo json_encode(['success' => false]);
 
 
-            
-           
-
-           
-             
-         
-    
 
 
-    
-          //  header("Location:user_Home_Page.php");
+            echo json_encode(['success' => false]);
+
+
+
+
+
+
+
+
+
+
+
+
+            //  header("Location:user_Home_Page.php");
 
 
         } catch (Exception $e) {
             echo $e->getMessage();
         }
-        
-
-
     }
 
 
@@ -201,17 +277,18 @@ class Database
 
 
 
-    function getAllProducts($connection_obj, string $table_name){
+    function getAllProducts($connection_obj, string $table_name)
+    {
         try {
-        $select_all_query = "select id,name,price,image,product_status from `product`";
-        $select_stmt = $connection_obj->prepare($select_all_query);
-        $select_stmt->execute();
-        $Products = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
-      
-       
+            $select_all_query = "select id,name,price,image,product_status from `product`";
+            $select_stmt = $connection_obj->prepare($select_all_query);
+            $select_stmt->execute();
+            $Products = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        
-echo"
+
+
+
+            echo "
 
 <!-- Navbar Start -->
 <div class='container-fluid p-0 nav-bar'>
@@ -285,31 +362,28 @@ echo"
 
 ";
 
-       
-        foreach ($Products as $product) {
-            echo "<tr>";
-            foreach ($product as $index=>$value) {
-                if($index == 'image'){
-                   // echo "<td>img</td>";
-                    echo "<td> <img src='images/{$value}' width='50' height='50' /> </td>";
-                }elseif($index== 'product_status'){
-                    echo "<td><a class='btn btn-info' href='change_status.php?id={$product['id']}&status={$product['product_status']}'>{$product['product_status']}</a></td>";
+
+            foreach ($Products as $product) {
+                echo "<tr>";
+                foreach ($product as $index => $value) {
+                    if ($index == 'image') {
+                        // echo "<td>img</td>";
+                        echo "<td> <img src='images/{$value}' width='50' height='50' /> </td>";
+                    } elseif ($index == 'product_status') {
+                        echo "<td><a class='btn btn-info' href='change_status.php?id={$product['id']}&status={$product['product_status']}'>{$product['product_status']}</a></td>";
+                    } elseif ($index == 'id') {
+                        continue;
+                    } else {
+                        echo "<td> {$value} </td>";
+                    }
                 }
-                elseif($index == 'id'){
-                    continue;
-               }
-                
-                else{
-                    echo "<td> {$value} </td>";
-                }
+                echo "<td><a class='btn btn-warning' href='update_product_form.php?id={$product['id']}'>Edit</a></td>";
+                echo "<td><a class='btn btn-danger' href='delete_product.php?id={$product['id']}'>Delete</a></td>";
+
+                echo "</tr>";
             }
-            echo "<td><a class='btn btn-warning' href='update_product_form.php?id={$product['id']}'>Edit</a></td>";
-            echo "<td><a class='btn btn-danger' href='delete_product.php?id={$product['id']}'>Delete</a></td>";
-           
-            echo "</tr>";
-        }
-        echo "</tbody>";
-        echo "</table>";
+            echo "</tbody>";
+            echo "</table>";
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -318,49 +392,39 @@ echo"
 
 
 
-    function changestatus($connection_obj,$product_id,$status){
-        
-        if($status=='Available')
-        {
-        
+    function changestatus($connection_obj, $product_id, $status)
+    {
+
+        if ($status == 'Available') {
+
             $update_by_id_query = "update `product` set `product_status`= 'UnAvailable' where id=:id;";
-        }else
-        {
+        } else {
             $update_by_id_query = "update `product` set `product_status`= 'Available' where id=:id;";
         }
-       
+
         $update_stmt = $connection_obj->prepare($update_by_id_query);
-        $update_stmt->bindParam(":id", $product_id,PDO::PARAM_STR);
-      
-        
-        $response=$update_stmt->execute();
+        $update_stmt->bindParam(":id", $product_id, PDO::PARAM_STR);
+
+
+        $response = $update_stmt->execute();
         var_dump($response);
         header("Location:Product_table.php");
-
-        
-    
-
-}
+    }
 
 
 
-    function deleteUserById($connection_obj,$id){
-               try{
-                $delete_by_id_query = "delete from `cafteriPHPproject`.`product` where `id`=:id ;";
-                $delete_stmt = $connection_obj->prepare($delete_by_id_query);
+    function deleteUserById($connection_obj, $id)
+    {
+        try {
+            $delete_by_id_query = "delete from `cafteriPHPproject`.`product` where `id`=:id ;";
+            $delete_stmt = $connection_obj->prepare($delete_by_id_query);
 
-                $delete_stmt->bindParam(":id",$id);
-                $delete_stmt->execute();
-                header("Location:Product_table.php");
-                
-
-               
-                
-            } 
-            catch(Exception $e){
-                $e->getMessage();
-            }
-      
+            $delete_stmt->bindParam(":id", $id);
+            $delete_stmt->execute();
+            header("Location:Product_table.php");
+        } catch (Exception $e) {
+            $e->getMessage();
+        }
     }
 
 
@@ -369,31 +433,27 @@ echo"
 
 
 
-    function updateProductById($connection_obj, $new_data){
-                $update_by_id_query = "update `product` set `name`=:name, `price`=:price,`image`=:image where id=:id";
-                $update_stmt = $connection_obj->prepare($update_by_id_query);
-                $update_stmt->bindParam(":id", $new_data['id'], PDO::PARAM_INT);
-                $update_stmt->bindParam(":name", $new_data['name'], PDO::PARAM_STR);
-                $update_stmt->bindParam(":price", $new_data['price'], PDO::PARAM_INT);
-                $update_stmt->bindParam(":image", $new_data['image'], PDO::PARAM_STR);
+    function updateProductById($connection_obj, $new_data)
+    {
+        $update_by_id_query = "update `product` set `name`=:name, `price`=:price,`image`=:image where id=:id";
+        $update_stmt = $connection_obj->prepare($update_by_id_query);
+        $update_stmt->bindParam(":id", $new_data['id'], PDO::PARAM_INT);
+        $update_stmt->bindParam(":name", $new_data['name'], PDO::PARAM_STR);
+        $update_stmt->bindParam(":price", $new_data['price'], PDO::PARAM_INT);
+        $update_stmt->bindParam(":image", $new_data['image'], PDO::PARAM_STR);
 
-                $response=$update_stmt->execute();
-                var_dump($response);
-               
+        $response = $update_stmt->execute();
+        var_dump($response);
 
-                if($response != true ) {
-                    $DBResponse['succes'] = 'Product updated successfully';
-                } else {
-                    $DBResponse['error'] = 'fils to update product!';
 
-                    
-                }
-                $DBResponse_Str = json_encode($DBResponse);
-                header("Location:update_product_form.php?response={$DBResponse_Str}");
-                
-            
-     
-}
+        if ($response != true) {
+            $DBResponse['succes'] = 'Product updated successfully';
+        } else {
+            $DBResponse['error'] = 'fils to update product!';
+        }
+        $DBResponse_Str = json_encode($DBResponse);
+        header("Location:update_product_form.php?response={$DBResponse_Str}");
+    }
 
 
 
@@ -410,9 +470,10 @@ echo"
 
 
 
-    function  getAllOrders($db){
-        try{
-        $select_query ="select O.date,O.id,U.name,R.roomName,U.ext,O.status,P.image,P.price,OP.amount,O.totalPrice
+    function  getAllOrders($db)
+    {
+        try {
+            $select_query = "select O.date,O.id,U.name,R.roomName,U.ext,O.status,P.image,P.price,OP.amount,O.totalPrice
                         from product P
                         inner join `order-product` OP 
                            on P.id = OP.product_id
@@ -422,13 +483,13 @@ echo"
                            on O.room_id = R.id 
                         inner join user U 
                            on R.id = U.room_id ;";
-        $select_stmt = $db->prepare($select_query);
-        $select_stmt->execute();
-        $orders = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
-       
-       
+            $select_stmt = $db->prepare($select_query);
+            $select_stmt->execute();
+            $orders = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        echo"
+
+
+            echo "
 
         <!-- Navbar Start -->
         <div class='container-fluid p-0 nav-bar'>
@@ -514,79 +575,62 @@ echo"
         ";
 
 
-   
-        foreach ($orders as $order) {
-            echo "<tr>";
-            foreach ($order as $index=>$value) {
-                if($index == 'image'){
-                   // echo "<td>img</td>";
-                    echo "<td> <img src='images/{$value}' width='50' height='50' /> </td>";
+
+            foreach ($orders as $order) {
+                echo "<tr>";
+                foreach ($order as $index => $value) {
+                    if ($index == 'image') {
+                        // echo "<td>img</td>";
+                        echo "<td> <img src='images/{$value}' width='50' height='50' /> </td>";
+                    } elseif ($index == 'id') {
+                        continue;
+                    } elseif ($index == 'totalPrice') {
+                        continue;
+                    } elseif ($index == 'status') {
+                        echo "<td><a class='btn btn-info' href='change_order_status.php?id={$order['id']}&status={$order['status']}'> {$order['status']} </a></td>";
+                    } else {
+                        echo "<td> {$value} </td>";
+                    }
                 }
-                elseif($index == 'id'){
-                     continue;
-                }
-                elseif($index == 'totalPrice'){
-                    continue;
-               }
-                elseif($index== 'status'){
-                    echo "<td><a class='btn btn-info' href='change_order_status.php?id={$order['id']}&status={$order['status']}'> {$order['status']} </a></td>";
-                }else{
-                    echo "<td> {$value} </td>";
-                }
+
+                echo "</tr>";
             }
-     
-            echo "</tr>";
-        }
-        echo "</tbody>";
-        echo "</table>";
-        
-        echo " <div>
+            echo "</tbody>";
+            echo "</table>";
+
+            echo " <div>
                  <h4 class='text-white mb-3 mt-3 d-flex justify-content-end'>Total Price </h4>
                  
                </div>";
-        echo" <div>
+            echo " <div>
                 <h3 class='text-white mb-4 d-flex justify-content-end'>{$order['totalPrice']}</h3>
-            </div>";       
+            </div>";
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
- 
 
 
 
-    function changeorderstatus($connection_obj,$order_id,$status){
-        
-        if($status=='processing')
-        {
+
+    function changeorderstatus($connection_obj, $order_id, $status)
+    {
+
+        if ($status == 'processing') {
 
             $update_by_id_query = "update `order` set `status`= 'out for delivery' where id=:id;";
-        }elseif($status=='out for delivery')
-        {
+        } elseif ($status == 'out for delivery') {
+            $update_by_id_query = "update `order` set `status`= 'done' where id=:id;";
+        } else {
             $update_by_id_query = "update `order` set `status`= 'done' where id=:id;";
         }
-        else
-        {
-            $update_by_id_query = "update `order` set `status`= 'done' where id=:id;";
-        }
-       
+
         $update_stmt = $connection_obj->prepare($update_by_id_query);
-        $update_stmt->bindParam(":id", $order_id,PDO::PARAM_STR);
-      
-        
-        $response=$update_stmt->execute();
+        $update_stmt->bindParam(":id", $order_id, PDO::PARAM_STR);
+
+
+        $response = $update_stmt->execute();
         var_dump($response);
         header("Location:orders.php");
-
-        
+    }
 }
-}
-
-?>
-
-
-
-
-
-
-
