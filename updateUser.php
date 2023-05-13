@@ -1,5 +1,5 @@
 <?php
-include 'connectTODB.php';
+include 'connectDB.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -24,7 +24,7 @@ $userId = $_GET['id'];
 
 try {
 
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $table = "user";
     $updateExt = $_GET['ext'];
     $data = $db->update($table, $updateName, $updateEmail, $updatePassword, $updateExt, $userId);

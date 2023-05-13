@@ -14,7 +14,7 @@ if($_SESSION['login']){
     $userId= $_SESSION['id'];
 }
 try{
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $db_Connected = $db->connect();
     if((isset($date1) and empty($date1) )and( isset($date2) and empty($date2))){
         $query = "SELECT * FROM `order`  WHERE `order`.user_id = $userId";

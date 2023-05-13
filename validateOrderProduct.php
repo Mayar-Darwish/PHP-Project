@@ -13,7 +13,7 @@ error_reporting(E_ALL);
 
 $orderId = $_GET['order'];
 try{
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $db_Connected = $db->connect();
 
     $query = "SELECT `name`, `price`, `image`, `amount`,`totalPrice`

@@ -1,5 +1,5 @@
 <?php
-include 'connectTODB.php';
+include 'connectDB.php';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -12,9 +12,9 @@ echo "<h1> delete </h1>";
 $userId = $_GET['id'];
 var_dump($userId);
 try {
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $table = "user";
-    $data=$db->delete("$table" , "$userId");
+    $data=$db->delete($table , $userId);
 } catch (Exception $e) {
     echo  $e->getMessage();
 }

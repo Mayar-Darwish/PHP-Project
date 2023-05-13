@@ -21,7 +21,7 @@ if (! $pass_res) {
 }
 try {
     $loggedIn = false;
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $db_Connected = $db->connect();
 
     $query = "SELECT * FROM `user` WHERE `email`=:email";
@@ -40,7 +40,7 @@ try {
         echo "Email Succeeded";
         try {
             echo "update password";
-            $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+            $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
             $db_Connected = $db->connect();
             $query = "UPDATE `user` SET `password`=:password WHERE `email`=:email";
 
@@ -58,7 +58,7 @@ try {
                     $_SESSION['user'] = $user['name'];
                     $_SESSION['login'] = true;
                 }
-                header("Location:userTest.php");
+                header("Location:user_Home_Page.php");
             } else {
                 $loggedIn = true;
                 if($loggedIn){

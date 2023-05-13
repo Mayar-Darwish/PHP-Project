@@ -4,7 +4,8 @@ const add_product = document.getElementById("add_product");
 let products = [];
 totalPriceSection = document.getElementById("totalPrice");
 let product_container = ``;
- let OrdertotalPrice;
+let OrdertotalPrice;
+ 
 function displayOrder() {
      OrdertotalPrice = 0;
     product_container = ``;
@@ -84,21 +85,16 @@ function deleteOrderFromProduct(productIndexx) {
 function add_order(orderID) {
     
   fetch(
-    `http://localhost/ITI-PHP-Course/FinalProject/fetchProduct.php?id=${orderID}`
+    `http://localhost/ITI-PHP-Course/PHP-Project/fetchProduct.php?id=${orderID}`
   ).then(async (data) => {
     data = await data.json();
     let product = data["product"];
-    product["totalPrice"] = product['price'];
-  
-    
-   
+    product["totalPrice"] = product["price"];
 
     for (let i = 0; i < products.length; i++) {
       if (products[i].id === product.id) {
-        
         increaseOrderQuantity(i);
-       
-        
+
         displayOrder();
         return;
       }
@@ -110,8 +106,6 @@ function add_order(orderID) {
      
    
 }
-
-
 
 
 async function sendData() {

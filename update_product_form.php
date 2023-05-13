@@ -58,8 +58,11 @@ include("connectDB.php");
                     <a href="contact.html" class="nav-item nav-link">Checks</a>
                 </div>
                 <div class="navbar-nav ml-auto p-4">
-                    <a href="index.html" class="nav-item nav-link active">Admin</a>
+                    <a href="#" class="nav-item nav-link active">Admin</a>
                 </div>
+                 <a href="index.php" class=" mb-5 nav-item nav-link ">
+                      LogOut
+                    </a>
             </div>
         </nav>
     </div>

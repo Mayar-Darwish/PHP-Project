@@ -13,7 +13,7 @@ $password = $_POST["password"];
 
 try {
     $loggedIn = false;
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $db_Connected = $db->connect();
 
     $query = "SELECT * FROM `user` WHERE `email`=:email";
@@ -46,7 +46,7 @@ try {
                     $_SESSION['login'] = true;
                 
                 }
-                header("Location:userTest.php");
+                header("Location:user_Home_Page.php");
             } else {
                 $loggedIn = true;
                 if($loggedIn){

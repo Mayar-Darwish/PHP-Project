@@ -15,7 +15,7 @@ $product_id=$_GET['id'];
 
 
 try {
-    $db = new Database('cafteriPHPproject','root','123456','127.0.0.1','3306');
+    $db = new Database('cafteriPHPproject','root','Marina.107','127.0.0.1','3306');
 
     if($db){
         

@@ -1,6 +1,6 @@
 <?php
 include 'connectDB.php';
-    $db = new Database('cafteriPHPproject','root','','127.0.0.1','3307');
+    $db = new Database('cafteriPHPproject','root','Marina.107','127.0.0.1','3306');
     $connected=$db->connect();
     $query= "select `user`.* ,SUM(totalPrice) FROM `order`, `user` WHERE `user`.id=`order`.user_id GROUP BY `order`.user_id; ";
     $stmt=$connected->prepare($query);
@@ -71,14 +71,17 @@ if (isset($_GET['products'])){
         </button>
         <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
             <div class="navbar-nav  p-4 mb-5">
-                <a href="index.html" class="nav-item nav-link ">Home</a>
-                <a href="about.html" class="nav-item nav-link">Products</a>
-                <a href="service.html" class="nav-item nav-link ">Users</a>
-                <a href="menu.html" class="nav-item nav-link">Manual Order</a>
-                <a href="Checks.php" class="nav-item nav-link active">Checks</a>
+                 <a href='admintest.php' class='nav-item nav-link '>Home</a>
+                    <a href='Product_table.php' class='nav-item nav-link'>Products</a>
+                    <a href='allUser.php' class='nav-item nav-link '>Users</a>
+                    <a href='orders.php' class='nav-item nav-link active'>Manual Order</a>
+                    <a href='Checks.php' class='nav-item nav-link'>Checks</a>
             </div>
             <div class="navbar-nav ml-auto p-4">
-                <a href="index.html" class="nav-item nav-link active mb-5">Admin</a>
+                <a href="#" class="nav-item nav-link active mb-5">Admin</a>
+                 <a href="index.php" class=" mb-5 nav-item nav-link ">
+                      LogOut
+                    </a>
             </div>
         </div>
     </nav>

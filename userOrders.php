@@ -20,7 +20,7 @@ if($_SESSION['login']){
   }
 
 try{
-$db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+$db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
 $db_Connected = $db->connect();
 $query = "SELECT * FROM `order` WHERE `order`.user_id = $userId";
 $stmt = $db_Connected->prepare($query);
@@ -81,7 +81,7 @@ if(isset($_GET["ProductDetailes"])){
 </head>
 
 <body>
-    <!-- Navbar Start -->
+     <!-- Navbar Start -->
     <div class="container-fluid p-0 nav-bar">
         <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
             <a href="index.php" class="navbar-brand px-lg-4 m-0">
@@ -97,11 +97,15 @@ if(isset($_GET["ProductDetailes"])){
             </button>
             <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                 <div class="navbar-nav mb-5 p-4">
-                    <a href="#" class="nav-item nav-link active">Home</a>
-                    <a href="#" class="nav-item nav-link">Orders</a>
+                    <a href="user_Home_Page.php" class="nav-item nav-link active">Home</a>
+                    <a href="userOrders.php" class="nav-item nav-link">Orders</a>
                 </div>
                 <div class="navbar-nav ml-auto p-4">
-                    <a href="#" class=" mb-5 nav-item nav-link active"><?php echo "{$userName}"?></a>
+                    <a href="#" class=" mb-5 nav-item nav-link active"><?php echo "{$userName}" ?>
+                    </a>
+                     <a href="index.php" class=" mb-5 nav-item nav-link ">
+                      LogOut
+                    </a>
                 </div>
             </div>
         </nav>
@@ -113,6 +117,8 @@ if(isset($_GET["ProductDetailes"])){
         </div>
     </div>
     <!-- Page Header End -->
+
+    
     <div class="container d-flex justify-content-center">
         <h2 class="display-4">My Orders</h2>
     </div>

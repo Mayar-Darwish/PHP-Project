@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 
 
 try{
-    $db = new Database('cafteriPHPproject', 'root', '', '127.0.0.1', '3306');
+    $db = new Database('cafteriPHPproject', 'root', 'Marina.107', '127.0.0.1', '3306');
     $db_Connected = $db->connect();
 
     $query = "DELETE FROM `order-product` WHERE `order_id`=:id";

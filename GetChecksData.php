@@ -2,7 +2,7 @@
 include 'connectDB.php';
 
 var_dump($_GET);
-$db = new Database('cafteriPHPproject','root','','127.0.0.1','3307');
+$db = new Database('cafteriPHPproject','root','Marina.107','127.0.0.1','3306');
 $connected=$db->connect();
 if ((isset($_GET['startDate']) and empty($_GET['startDate']) )and( isset($_GET['endDate']) and empty($_GET['endDate'])))
 {
