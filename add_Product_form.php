@@ -1,11 +1,5 @@
 <?php
 include 'connectDB.php';
-echo '
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-     integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
-     integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
-     crossorigin="anonymous"></script>';
 ini_set('display_errors', 1);
 ini_set('display_st((artup_errors', 1);
 error_reporting(E_ALL);
@@ -45,13 +39,13 @@ if (isset($_GET["response"])) {
     <!-- Libraries Stylesheet -->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
+  
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.min.css" rel="stylesheet">
 </head>
 
 <body>
-   
+
     <!-- Navbar Start -->
     <div class="container-fluid p-0 nav-bar">
         <nav class="navbar navbar-expand-lg bg-none navbar-dark py-3">
@@ -94,19 +88,19 @@ if (isset($_GET["response"])) {
                 <div class="row align-items-center">
                     <div class="col-lg-12">
                         <div class="text-center p-5" style="background: rgba(51, 33, 29, .8);">
-                         <div class="fs-4 mb-4">
-                                    <span style="color:red;">
-                                        <?php if (isset($response['error']))
-                                            echo $response['error'];
-                                            ?>
-                                    </span>
-                                      <span style="color:green;">
-                                        <?php if (isset($response['succes']))
-                                            echo $response['succes'];
-                                        ?>
-                                    </span>
-                                
-                                </div>
+                            <div class="fs-4 mb-4">
+                                <span style="color:red;">
+                                    <?php if (isset($response['error']))
+                                        echo $response['error'];
+                                    ?>
+                                </span>
+                                <span style="color:green;">
+                                    <?php if (isset($response['succes']))
+                                        echo $response['succes'];
+                                    ?>
+                                </span>
+
+                            </div>
                             <h1 class="text-white mb-4 mt-5">Add Product</h1>
                             <form class="mb-5" method="post" action="add_Product.php" enctype="multipart/form-data">
                                 <div class="form-group row ">
@@ -116,16 +110,16 @@ if (isset($_GET["response"])) {
                                     <div class="col-lg-8 col">
                                         <input type="text" class="form-control bg-transparent border-primary p-4"
                                             name="name" id="name" required value="<?php if (isset($formData["name"]))
-                                                echo $formData['name']; ?>"/>
+                                                echo $formData['name']; ?>" />
                                         <span style="color:red;">
                                             <?php if (isset($errorss['name']))
                                                 echo $errorss['name']; ?>
                                         </span>
-                                         <span style="color:red;">
+                                        <span style="color:red;">
                                             <?php if (isset($errorss['name_valid']))
                                                 echo $errorss['name_valid']; ?>
                                         </span>
-                                        
+
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -136,16 +130,16 @@ if (isset($_GET["response"])) {
                                         <input type="number" class="form-control bg-transparent border-primary p-4"
                                             name="price" id="product-price" required value="<?php if (isset($formData["price"]))
                                                 echo $formData['price']; ?>" />
-                                                
+
                                         <span style="color:red;">
                                             <?php if (isset($errorss['price']))
                                                 echo $errorss['price']; ?>
                                         </span>
-                                          <span style="color:red;">
+                                        <span style="color:red;">
                                             <?php if (isset($errorss['price_valid']))
                                                 echo $errorss['price_valid']; ?>
                                         </span>
-                                       
+
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -175,7 +169,7 @@ if (isset($_GET["response"])) {
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-lg-2 col fs-4">
-                                        <label for="image" class="text-white col-form-label" >Product picture</label>
+                                        <label for="image" class="text-white col-form-label">Product picture</label>
                                     </div>
                                     <div class="col-lg-8 col">
                                         <input type="file" name="image" class="form-control" id="image" required value="<?php if (isset($formData["image"]))
@@ -186,7 +180,7 @@ if (isset($_GET["response"])) {
                                         </span>
                                     </div>
                                 </div>
-                               
+
                                 <div class="row justify-content-center">
                                     <div class="col-2">
                                         <button class="btn btn-primary btn-block font-weight-bold py-2"
@@ -198,7 +192,7 @@ if (isset($_GET["response"])) {
                                             type="reset">reset</button>
                                     </div>
                                 </div>
-                                
+
                             </form>
                         </div>
                     </div>

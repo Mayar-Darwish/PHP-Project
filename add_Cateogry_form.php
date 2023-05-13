@@ -1,11 +1,5 @@
 <?php
 include 'connectDB.php';
-echo '
-   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
-     integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
-     integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
-     crossorigin="anonymous"></script>';
 ini_set('display_errors', 1);
 ini_set('display_st((artup_errors', 1);
 error_reporting(E_ALL);
@@ -45,7 +39,6 @@ if (isset($_GET["response"])) {
     <!-- Libraries Stylesheet -->
     <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.min.css" rel="stylesheet">
 </head>
@@ -108,14 +101,14 @@ if (isset($_GET["response"])) {
 
                             </div>
                             <h1 class="text-white mb-4 mt-5">Add Cateogry</h1>
-                            <form class="mb-5" method="post" action="add_Cateogry.php" >
+                            <form class="mb-5" method="post" action="add_Cateogry.php">
                                 <div class="form-group row ">
                                     <div class="col-lg-2 col  fs-4">
                                         <label for="cateogry-name" class="text-white col-form-label">Name</label>
                                     </div>
                                     <div class="col-lg-8 col">
                                         <input type="text" class="form-control bg-transparent border-primary p-4"
-                                            name="name" id="cateogry" required/>
+                                            name="name" id="cateogry" required />
                                         <span style="color:red;">
                                             <?php if (isset($errorss['name']))
                                                 echo $errorss['name']; ?>
@@ -127,7 +120,7 @@ if (isset($_GET["response"])) {
 
                                     </div>
                                 </div>
-           
+
                                 <div class="row justify-content-center">
                                     <div class="col-2">
                                         <button class="btn btn-primary btn-block font-weight-bold py-2"

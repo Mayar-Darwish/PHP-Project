@@ -1,6 +1,4 @@
 <?php
-echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>';
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
@@ -46,6 +44,7 @@ class Database
         return $data;
 
     }
+
     function add_Product($db,$newProduct){
         try {
 
@@ -73,6 +72,7 @@ class Database
 
 
     }
+
     function add_Cateogry($db, $newCateogry){
         try {
                        
@@ -94,9 +94,103 @@ class Database
         }
 
     }
+    function select_available_Products($db){
+        $select_query = "select * from `cafteriPHPproject`.`product` where `product_status`='Available'; ";
+        $select_stmt = $db->prepare($select_query);
+        $select_stmt->execute();
+        $products = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $products;
 
-   
+
+    }
+
+    function select_product_ByID($db,$id){
+        $select_query = "select * from `cafteriPHPproject`.`product` where `product_status`='Available' and `id`=:id ; ";
+        
+        $select_stmt = $db->prepare($select_query);
+        $select_stmt->bindParam(":id", $id);
+        $select_stmt->execute();
+        $product = $select_stmt->fetch(PDO::FETCH_ASSOC);
+        return $product;
+
+
+
+    }
+
+    function select_rooms($db)
+    {
+        $select_query = "select * from `cafteriPHPproject`.`room`; ";
+
+        $select_stmt = $db->prepare($select_query);
+        $select_stmt->execute();
+        $rooms = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
+        var_dump($rooms);
+        return $rooms;
+
+
+
+    }
+    function add_order($db,$order){
+        var_dump($order);
+      
+        try {
+            # insert in order table 
+            $user_id = 1;
+           
+            $insert_query = "insert into `cafteriPHPproject`.`order` (notes,totalPrice,user_id,room_id) values(:notes,:totalPrice,:user_id,:room_id);";
+            $insert_statm = $db->prepare($insert_query);
+            $insert_statm->bindParam(":notes", $order['note'], PDO::PARAM_STR);
+            $insert_statm->bindParam(":user_id",$user_id, PDO::PARAM_INT);
+            $insert_statm->bindParam(":totalPrice", $order["OrdertotalPrice"], PDO::PARAM_INT);
+            $insert_statm->bindParam(":room_id", $order['room'], PDO::PARAM_INT);
+            $response = $insert_statm->execute();
+
+
+            # insert into order-product table  
+            $orderID = $db->lastInsertId();
+
+            foreach ($order['products'] as $row) {
+               var_dump($row);
+                $insert_query = "insert into `cafteriPHPproject`.`order-product` (amount,product_id,order_id,totalProductPrice) values(:amount,:product_id,:order_id,:totalProductPrice);";
+                $insert_statm = $db->prepare($insert_query);
+                $insert_statm->bindParam(":amount", $row['quantity'], PDO::PARAM_INT);
+                $insert_statm->bindParam(":product_id", $row['id'], PDO::PARAM_INT);
+                $insert_statm->bindParam(":order_id", $orderID, PDO::PARAM_INT);
+                $insert_statm->bindParam(":totalProductPrice", $row['totalPrice'], PDO::PARAM_INT);
+                $response = $insert_statm->execute();
+                var_dump($response);
+            }
+        
+
+             
+            
+             echo json_encode(['success' => false]);
+
+
+            
+           
+
+           
+             
+         
     
+
+
+    
+          //  header("Location:user_Home_Page.php");
+
+
+        } catch (Exception $e) {
+            echo $e->getMessage();
+        }
+        
+
+
+    }
+
+
+
+
 }
 
 ?>
