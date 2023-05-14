@@ -24,8 +24,6 @@ $profilePic = $_FILES["profilePic"];
 
 if (isset($profilePic['name'])and empty($profilePic['name'])){
     $errors['profilePic']= "Profile Picture is required";
-}else{
-    $oldData['profilePic']=$profilePic['full_path'];
 }
 if (isset($name) and empty($name)) {
     $errors['name'] = 'Name is required';
@@ -96,9 +94,9 @@ if ($errors){
     try {
 
 
-    $db=new Database('cafteriPHPproject','root','','127.0.0.1','3307');
+    $db=new Database('cafteriPHPproject','root','Marina.107','127.0.0.1','3306');
     $connected=$db->connect();
-    var_dump($connected);
+    
     $query="insert into `user` (`name`,`email`,`image`,`ext`,`password`,`room_id`) values (:name,:email,:image,:ext,:password,:room_id)";
     $stmt=$connected->prepare($query);
     $stmt->bindParam(":name",$name);
@@ -107,14 +105,14 @@ if ($errors){
     $stmt->bindParam(":ext",$ext);
     $stmt->bindParam(":password",$password);
     $stmt->bindParam("room_id",$roomNo);
-    var_dump($stmt);
+    
     $stmt->execute();
 
 
     }catch (Exception $e){
         var_dump($e->getMessage());
     }
-//    header('Location:AddUser.php?msg=User added successfully');
+   header('Location:AddUser.php?msg=User added successfully');
 }
 
 

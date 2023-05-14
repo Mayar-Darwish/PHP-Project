@@ -74,8 +74,8 @@ if (isset($_GET['products'])){
                  <a href='admintest.php' class='nav-item nav-link '>Home</a>
                     <a href='Product_table.php' class='nav-item nav-link'>Products</a>
                     <a href='allUser.php' class='nav-item nav-link '>Users</a>
-                    <a href='orders.php' class='nav-item nav-link active'>Manual Order</a>
-                    <a href='Checks.php' class='nav-item nav-link'>Checks</a>
+                    <a href='orders.php' class='nav-item nav-link '>Manual Order</a>
+                    <a href='Checks.php' class='nav-item nav-link active'>Checks</a>
             </div>
             <div class="navbar-nav ml-auto p-4">
                 <a href="#" class="nav-item nav-link active mb-5">Admin</a>
@@ -204,7 +204,7 @@ if (isset($products) and !empty($products)){
     foreach ($products as $product){
         echo "
                    <div class='col-4  col-sm-3'>
-                            <img class='w-100 rounded-circle mb-3 mb-sm-0' src='{$product['image']}' alt=''>
+                            <img class='w-100 rounded-circle mb-3 mb-sm-0' src='images/{$product['image']}' alt=''>
                             <h5 class='menu-price'>$ {$product['price']}</h5>
                             <h6 class='mt-2 text-center fw-bold' style='color: #33211D'>{$product['name']}</h6>
                             <p class='mt-2 text-center' style='color: #33211D'>{$product['amount']}</p>

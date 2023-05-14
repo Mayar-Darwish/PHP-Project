@@ -83,6 +83,7 @@ function deleteOrderFromProduct(productIndexx) {
 
 
 function add_order(orderID) {
+  console.log("in addd order");
     
   fetch(
     `http://localhost/ITI-PHP-Course/PHP-Project/fetchProduct.php?id=${orderID}`
@@ -92,7 +93,9 @@ function add_order(orderID) {
     product["totalPrice"] = product["price"];
 
     for (let i = 0; i < products.length; i++) {
+      console.log(products[i]);
       if (products[i].id === product.id) {
+
         increaseOrderQuantity(i);
 
         displayOrder();

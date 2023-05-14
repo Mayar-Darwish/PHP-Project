@@ -3,9 +3,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
-';
+
 
 class Database
 {
@@ -74,7 +72,7 @@ class Database
         return $data;
     }
 
-    function getRoom($room_id)  #get rooms
+    function getRoom($room_id) #get rooms
     {
         $db = $this->connect();
         $query = "select `roomName` 
@@ -127,9 +125,9 @@ class Database
         return $data;
     }
 
-###
+    ###
 
-    function  getAllCateogries($db)
+    function getAllCateogries($db)
     {
         $select_query = "select * from `cafteriPHPproject`.`cateogry`";
         $select_stmt = $db->prepare($select_query);
@@ -200,6 +198,7 @@ class Database
         $select_stmt->execute();
         $product = $select_stmt->fetch(PDO::FETCH_ASSOC);
         return $product;
+
     }
 
     function select_rooms($db)
@@ -220,11 +219,11 @@ class Database
         if ($_SESSION['login']) {
             $user_id = $_SESSION['id'];
         }
-       // var_dump($order);
+        // var_dump($order);
 
         try {
             # insert in order table 
-           
+
 
             $insert_query = "insert into `cafteriPHPproject`.`order` (notes,totalPrice,user_id,room_id) values(:notes,:totalPrice,:user_id,:room_id);";
             $insert_statm = $db->prepare($insert_query);
@@ -239,7 +238,7 @@ class Database
             $orderID = $db->lastInsertId();
 
             foreach ($order['products'] as $row) {
-                var_dump($row);
+
                 $insert_query = "insert into `cafteriPHPproject`.`order-product` (amount,product_id,order_id,totalProductPrice) values(:amount,:product_id,:order_id,:totalProductPrice);";
                 $insert_statm = $db->prepare($insert_query);
                 $insert_statm->bindParam(":amount", $row['quantity'], PDO::PARAM_INT);
@@ -247,7 +246,7 @@ class Database
                 $insert_statm->bindParam(":order_id", $orderID, PDO::PARAM_INT);
                 $insert_statm->bindParam(":totalProductPrice", $row['totalPrice'], PDO::PARAM_INT);
                 $response = $insert_statm->execute();
-                var_dump($response);
+
             }
 
 
@@ -309,6 +308,8 @@ class Database
     <!-- Customized Bootstrap Stylesheet -->
     <link href='css/style.min.css' rel='stylesheet'>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css' rel='stylesheet' </head>
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp' crossorigin='anonymous'>
+
 
     </head>  
     <body> 
@@ -419,6 +420,8 @@ class Database
 <script src='mail/jqBootstrapValidation.min.js'></script>
 <script src='mail/contact.js'></script>    <!-- Template Javascript -->
 <script src='js/main.js'></script>
+ <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js' integrity='sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N' crossorigin='anonymous'></script>
+
  </body> 
 
 
@@ -520,12 +523,12 @@ class Database
 
 
 
-  
 
 
 
 
-    function  getAllOrders($db)
+
+    function getAllOrders($db)
     {
         try {
             $select_query = "select O.date,O.id,U.name,R.roomName,U.ext,O.status,P.image,P.price,OP.amount,O.totalPrice
@@ -544,8 +547,8 @@ class Database
 
 
 
-            echo 
-            "  <!DOCTYPE html>
+            echo
+                "  <!DOCTYPE html>
 <html lang='en'>
 
 <head>

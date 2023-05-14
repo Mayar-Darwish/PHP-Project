@@ -187,7 +187,7 @@ if(isset($_GET["ProductDetailes"])){
                         foreach($productsOrderDetailes as $productOrderDetailes){
                             echo "
                             <div class='col-4  col-sm-3'>
-                                <img class='w-100 rounded-circle mb-3 mb-sm-0' src='{$productOrderDetailes['image']}' alt=''>
+                                <img class='w-100 rounded-circle mb-3 mb-sm-0' src='images/{$productOrderDetailes['image']}' alt=''>
                                 <h5 class='menu-price'> {$productOrderDetailes['price']} $</h5>
                                 <h6 class='mt-2 text-center fw-bold' style='color: #33211D'>{$productOrderDetailes['name']}</h6>
                                 <p class='mt-2 text-center' style='color: #33211D'>{$productOrderDetailes['amount']} </p>
