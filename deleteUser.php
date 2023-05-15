@@ -19,4 +19,4 @@ try {
     echo  $e->getMessage();
 }
 
-header('location:allUser.php');
+// header('location:allUser.php');

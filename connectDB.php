@@ -118,10 +118,11 @@ class Database
     {
         $db = $this->connect();
         $query = "delete from {$tableName} where id={$id}";
-
+        // var_dump($query);
         $stat = $db->prepare($query);
         $res = $stat->execute();
         $data = $stat->fetchAll(PDO::FETCH_ASSOC);
+        // var_dump($data);
         return $data;
     }
 
@@ -531,19 +532,15 @@ class Database
     function getAllOrders($db)
     {
         try {
-            $select_query = "select O.date,O.id,U.name,R.roomName,U.ext,O.status,P.image,P.price,OP.amount,O.totalPrice
-                        from product P
-                        inner join `order-product` OP 
-                           on P.id = OP.product_id
-                        inner join `order` O 
-                           on OP.order_id = O.id 
-                        inner join room R 
-                           on O.room_id = R.id 
-                        inner join user U 
-                           on R.id = U.room_id ;";
+
+            $select_query = "select O.date , U.name,R.roomName,U.ext,O.id as order_id,O.totalPrice,O.status
+             from `user` as U inner join `order` as O  on U.id=O.user_id
+              inner join room as R on R.id=O.room_id;";
             $select_stmt = $db->prepare($select_query);
             $select_stmt->execute();
             $orders = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
+            // var_dump($orders);
+            // exit();
 
 
 
@@ -653,13 +650,13 @@ class Database
                                  <thead>
                                 
                                  <th> Date </th>
+                              
                                  <th> Name </th>
-                                 <th> Room Number </th>
+                                 <th> Room  </th>
                                  <th> Ext </th>
-                                 <th> Status </th>
-                                 <th> Image </th>
-                                 <th> Price </th>
-                                 <th> Amount </th>
+                                <th>products</th>
+                                 <th>Action </th>
+                            
                                 
                                  </thead>
 
@@ -700,39 +697,64 @@ class Database
             foreach ($orders as $order) {
                 echo "<tr>";
                 foreach ($order as $index => $value) {
-                    if ($index == 'image') {
-                        // echo "<td>img</td>";
-                        echo "<td> <img src='images/{$value}' width='50' height='50' /> </td>";
-                    } elseif ($index == 'id') {
+
+                    if ($index == 'totalPrice') {
                         continue;
-                    } elseif ($index == 'totalPrice') {
-                        continue;
-                    } elseif ($index == 'status') {
-                        echo "<td><a class='btn btn-info' href='change_order_status.php?id={$order['id']}&status={$order['status']}'> {$order['status']} </a></td>";
-                    } else {
+                 
+                    } elseif ($index == 'order_id') {
+                        // var_dump("in else");
+                        // exit();
+                        $order_id= (int)($order['order_id']);
+                        
+
+                        $select_query = "select name,amount,image from `order-product` as O_P 
+                                        inner join 
+                                        `product` as P on O_P.product_id=P.id
+                                         where O_P.order_id=$order_id;";
+                        $select_stmt = $db->prepare($select_query);
+                        $select_stmt->execute();
+                        $products = $select_stmt->fetchAll(PDO::FETCH_ASSOC);
+                        // var_dump($products);
+                        echo "<td>";
+                        foreach ($products as $product) {
+                           
+                            // foreach ($product as $index => $value) {
+                              //  if ($index == 'amount') {
+                                echo "<div>
+                                {$product['name']}
+                                {$product['amount']}
+                                <img src='images/{$product['image']}' width=70px>
+                                </div>";
+                                  
+                                // echo "{$product['amount']}";
+                               // }
+                         //   }
+                        }
+                        echo "</td>";
+
+                       } elseif ($index == 'status') {
+                        echo "<td><a class='btn btn-info' href='change_order_status.php?id={$order['order_id']}&status={$order['status']}'> {$order['status']} </a></td>";
+                    }else {
                         echo "<td> {$value} </td>";
+
                     }
+
                 }
 
                 echo "</tr>";
+
+
             }
+
             echo "</tbody>";
             echo "</table>";
-
-            echo " <div>
-                 <h4 class='text-white mb-3 mt-3 d-flex justify-content-end'>Total Price </h4>
-                 
-               </div>";
-            echo " <div>
-                <h3 class='text-white mb-4 d-flex justify-content-end'>{$order['totalPrice']}</h3>
-            </div>";
         } catch (Exception $e) {
             echo $e->getMessage();
         }
     }
 
 
-
+   
 
     function changeorderstatus($connection_obj, $order_id, $status)
     {
